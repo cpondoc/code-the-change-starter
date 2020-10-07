@@ -1,0 +1,93 @@
+:root { 
+  --style-color: #3171d6; 
+}
+@keyframes fadeInOpacity { 
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--style-color);
+  color: white;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.board {
+  border: 1rem solid white;
+  border-radius: 1rem;
+  background: white;
+  width: 500px;
+  height: 500px;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.squares {
+  background: var(--style-color);
+  color: white;
+  border: white;
+  border-radius: 0.5rem;
+  font-size: 5rem;
+  cursor: pointer;
+  outline: none;
+  opacity: 1;
+}
+
+.squares:active {
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: 0.5s; 
+}
+
+h1 {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.info-wrapper {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#start {
+  background-color: white;
+  border: white;
+  color: var(--style-color);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
+  border-radius: 1.25rem;
+}
+
+#start:hover {
+  cursor: pointer;
+  background: #bfbfbf; 
+}
+
+.moveText {
+  font-size: 100px !important;
+  color: white !important;
+  opacity: 1;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: 0.5s; 
+}
