@@ -4,34 +4,68 @@ import Board from "./Board";
 
 const Game = () => {
 
-  const [board, setBoard] = useState(['', '', '', '', '', '', '', '', '']);
   const [stepNumber, setStepNumber] = useState(0);
   const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([['', '', '', '', '', '', '', '', '']]);
 
-  var currentWinner = calculateWinner(board);
+  var currentWinner = calculateWinner(history[stepNumber]);
   var nextMove = xIsNext ? 'X' : 'O';
+  console.log(history);
 
   let handleClick = (index) => {
     if (currentWinner === null) {
-      const newBoard = [];
-      for (var i = 0; i < board.length; i++) {
-          newBoard.push(board[i]);
+      var oldBoard = ['', '', '', '', '', '', '', '', ''];
+      for (var i = 0; i < history[stepNumber].length; i++) {
+        oldBoard[i] = history[stepNumber][i];
       }
-      if (newBoard[index] === '') {
-          newBoard[index] = nextMove;
-          setBoard(newBoard);
-          setXIsNext(!xIsNext);
-          setStepNumber(stepNumber + 1);
-      }
+      oldBoard[index] = nextMove;
+      history.push(oldBoard);
+      setHistory(history);
+      setXIsNext(!xIsNext);
+      setStepNumber(stepNumber + 1);
+
     }
   }
 
-  let jumpToStart = () =>
-  {
-    const newBoard = ['', '', '', '', '', '', '', '', ''];
-    setBoard(newBoard);
-    setXIsNext(true);
-    setStepNumber(0);
+  let jumpTo = (step) => {
+    if (step === 0) {
+      setHistory([['', '', '', '', '', '', '', '', '']]);
+      setXIsNext(true);
+      setStepNumber(0);
+    }
+    else {
+      var newHistory = history.slice(0, step + 1);
+      console.log(newHistory);
+      setHistory(newHistory)
+      if (step % 2 === 0) {
+        setXIsNext(true);
+      } 
+      else {
+        setXIsNext(false);
+      }
+      setStepNumber(step);
+    }
+  }
+
+  let renderMoves = () => {
+    const historyButtons = history.map((result, i) => {
+
+      if (i !== 0) {
+        return (<>
+          <button className="start" onClick={() => jumpTo(i)}>Go to move #{i}</button>
+          <br />
+          <br />
+           </>);
+      }
+      else {
+        return (<>
+        <button className="start" onClick={() => jumpTo(0)}>Go to Start</button>
+        <br />
+        <br />
+        </>)
+      }});
+    return historyButtons;
+    
   }
 
   let result = () => {
@@ -47,10 +81,12 @@ const Game = () => {
   return (
     <>
       <h1>Tic Tac Toe</h1>
-      <Board squares={board} onClick={handleClick}/>
+      <Board squares={history[stepNumber]} onClick={handleClick}/>
       <div className='info-wrapper'>
           <div>
-            <button id="start" onClick={jumpToStart}>Go to Start</button>
+          <h3>History</h3>
+          <br />
+          {renderMoves()}
           </div>
           <h3>{result()}</h3>
       </div>
